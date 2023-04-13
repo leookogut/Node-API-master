@@ -1,8 +1,8 @@
 const tbody = document.querySelector("tbody");
 const addForm = document.querySelector(".add-form");
-//const inputTask = document.querySelector(".input-task");
-//const inputQtd = document.querySelector(".input-task2");
-//const inputPrice = document.querySelector(".input-task3");
+const inputTask = document.querySelector(".input-task");
+const inputQtd = document.querySelector(".input-task2");
+const inputPrice = document.querySelector(".input-task3");
 
 const fetchTasks = async () => {
     const response = await fetch("http://localhost:3000/products");
@@ -26,9 +26,9 @@ const addTask = async (event) => {
     });
 
     loadTasks();
-    //inputTask.value = "";
-    //inputTask2.value = "";
-    //inputTask3.value = "";
+    inputTask.value = "";
+    inputTask2.value = "";
+    inputTask3.value = "";
 };
 
 const deleteTask = async (id) => {
@@ -84,20 +84,20 @@ const createSelect = (value) => {
 };
 
 const createRow = (task) => {
-    const { _id, seller_name, seller_phone, createdAt, updatedAt } = task;
+    const { _id, name, createdAt, quantity, price, image } = task;
 
     const tr = createElement("tr");
-    const tdId = createElement("td", _id);
-    const tdTitle = createElement("td", seller_name);
+    const tdTitle = createElement("td", name);
     const tdCreatedAt = createElement("td", formatDate(createdAt));
-    const tdPhone = createElement("td", seller_phone);
+    const tdQtd = createElement("td", quantity);
+    const tdPrice = createElement("td", price);
     const tdStatus = createElement("td");
     const tdActions = createElement("td");
 
-    const select = createSelect(formatDate(updatedAt));
+    const select = createSelect(image);
 
     select.addEventListener("change", ({ target }) =>
-        updateTask({ ...task, updatedAt: target.value })
+        updateTask({ ...task, image: target.value })
     );
 
     const editButton = createElement(
@@ -114,13 +114,13 @@ const createRow = (task) => {
     const editForm = createElement("form");
     const editInput = createElement("input");
 
-    editInput.value = seller_name;
+    editInput.value = name;
     editForm.appendChild(editInput);
 
     editForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
-        updateTask({ _id, seller_name: editInput.value, updatedAt });
+        updateTask({ _id, name: editInput.value, image });
     });
 
     editButton.addEventListener("click", () => {
@@ -138,10 +138,10 @@ const createRow = (task) => {
     tdActions.appendChild(editButton);
     tdActions.appendChild(deleteButton);
 
-    tr.appendChild(tdId);
-    tr.appendChild(tdCreatedAt);
     tr.appendChild(tdTitle);
-    tr.appendChild(tdPhone);
+    tr.appendChild(tdCreatedAt);
+    tr.appendChild(tdQtd);
+    tr.appendChild(tdPrice);
     tr.appendChild(tdStatus);
     tr.appendChild(tdActions);
 
@@ -159,12 +159,6 @@ const loadTasks = async () => {
     });
 };
 
-//addForm.addEventListener("submit", addTask);
+addForm.addEventListener("submit", addTask);
 
 loadTasks();
-
-function timedRefresh(timeoutPeriod) {
-    setTimeout("location.reload(true);", timeoutPeriod);
-}
-
-window.onload = timedRefresh(20000);

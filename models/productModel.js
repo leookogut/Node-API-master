@@ -1,31 +1,48 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema(
     {
-        name: {
+        id_ticket: {
             type: String,
-            required: [true, "Please enter a product name"]
+            required: [true, "Please enter id"],
+            default: 0,
         },
-        quantity: {
-            type: Number,
-            required: true,
-            default: 0
-        },
-        price: {
-            type: Number,
-            required: true,
-        },
-        image: {
+        seller_name: {
             type: String,
             required: false,
-        }
+        },
+        seller_amount: {
+            type: Number,
+            required: true,
+        },
+        chave_Pix: {
+            type: String,
+            required: true,
+        },
     },
     {
-        timestamps: true
+        timestamps: true,
     }
-)
+);
 
+const disparoWA = mongoose.Schema(
+    {
+        seller_name: {
+            type: String,
+            required: false,
+        },
+        seller_phone: {
+            type: String,
+            required: true,
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
 
-const Product = mongoose.model('Product', productSchema);
+//const Product = mongoose.model("Product", productSchema);
+
+const Product = mongoose.model("Product", disparoWA);
 
 module.exports = Product;
